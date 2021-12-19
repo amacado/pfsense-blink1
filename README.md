@@ -7,15 +7,17 @@
 </div>
 
 ### Introduction
+
 Watch your pfsense temperature with blink(1)
 
 ### Requirements
+
 * blink(1) `mk2` or `mk3` by [THINGM](https://blink1.thingm.com/) <br />
   <small>`mk1` does not have two LEDs on both top and bottom which are independently addressable. It might work, but not tested.</small>
 
-### Preperations & setup
-The intended deployment of this script is on another machine (or container) than the pfsense. It's recommended
-to keep your firewall server as "clean" as possible.
+### Preparations & setup
+
+The intended deployment of this script is on another machine (or container) than the pfsense. It's recommended to keep your firewall server as "clean" as possible.
 
 1. Setup [jaredhendrickson13/pfsense-api](https://github.com/jaredhendrickson13/pfsense-api) for [pfsense](https://www.pfsense.org/)
 2. Create an API Token for the REST API (see `jaredhendrickson13/pfsense-api` instructions)
@@ -25,22 +27,30 @@ to keep your firewall server as "clean" as possible.
 5. Clone this repository (`gh repo clone amacado/pfsense-blink`)
 6. `yarn install`
 7. Copy [.env.sample](/.env.sample), rename it to `.env` and paste API credentials and pfsense URI
-7. Run the app using `yarn run start` (or `node main.js`)
+7. Run the app using `yarn run start` (or `node dist/main.js`)
+
+### Development
+
+* Use `yarn serve` for live development
+* Execute `yarn build` to build the project and create compiled project in [/dist/](/dist/)
 
 ### Known problems
+
 ##### Error `TypeError: cannot open device with path`
-This error may occurs when the current user is not allowed to access the
-attached blink(1) device:
+
+This error may occurs when the current user is not allowed to access the attached blink(1) device:
+
 ```bash
 TypeError: cannot open device with path /dev/hidraw0
 ```
-If you're running this script in a docker container you might want to check
-the [bindings](https://forums.balena.io/t/docker-container-cannot-access-dynamically-plugged-usb-devices/4277) and
+
+If you're running this script in a docker container you might want to check the [bindings](https://forums.balena.io/t/docker-container-cannot-access-dynamically-plugged-usb-devices/4277) and
 `mount /dev:/dev` which allows the container to access the device.
 
-
 ### Credits
+
 Special thanks to this projects:
+
 * [sandeepmistry/node-blink1](https://github.com/sandeepmistry/node-blink1)
 * [jaredhendrickson13/pfsense-api](https://github.com/jaredhendrickson13/pfsense-api)
 
