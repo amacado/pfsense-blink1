@@ -77,13 +77,14 @@ function flashError() {
 }
 
 const blink1Devices = Blink1.devices();
+if(blink1Devices.length == 0) { log.error('No attached blink1 devices could be found'); return; }
+
 log.info('', 'Found blink1 devices %j serials', blink1Devices);
 
 const blink1DeviceSerial = blink1Devices[0];
 log.info('', 'Using blink1 device with serial %s', blink1DeviceSerial);
 
 var blink1 = new Blink1(blink1DeviceSerial);
-
 
 setInterval(() => {
     apiRequestTemperature();
