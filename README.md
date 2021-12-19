@@ -7,12 +7,16 @@
 </div>
 
 ### Introduction
-:construction:
+Watch your pfsense temperature with blink(1)
 
 ### Requirements
-blink(1)mk2 (mk1 & mk3 might work to, not tested)
+* blink(1) `mk2` or `mk3` by [THINGM](https://blink1.thingm.com/) <br />
+  <small>`mk1` does not have two LEDs on both top and bottom which are independently addressable. It might work, but not tested.</small>
 
 ### Preperations & setup
+The intended deployment of this script is on another machine (or container) than the pfsense. It's recommended
+to keep your firewall server as "clean" as possible.
+
 1. Setup [jaredhendrickson13/pfsense-api](https://github.com/jaredhendrickson13/pfsense-api) for [pfsense](https://www.pfsense.org/)
 2. Create an API Token for the REST API (see `jaredhendrickson13/pfsense-api` instructions)
 3. Install [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0` which is required to access the [blink(1)](https://blink1.thingm.com/) device using the node package [sandeepmistry/node-blink1](https://github.com/sandeepmistry/node-blink1)
