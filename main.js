@@ -27,10 +27,11 @@ if (env.error) {
     throw env.error
 }
 
-const pfSenseApiBaseUrl       = env.parsed.PFSENSE_API_BASE_URL;
-const credentialsClientId     = env.parsed.PFSENSE_API_CLIENT;
-const credentialsClientSecret = env.parsed.PFSENSE_API_TOKEN;
-const checkStatusInterval     = env.parsed.CHECK_STATUS_INTERVAL;
+const pfSenseApiBaseUrl           = env.parsed.PFSENSE_API_BASE_URL;
+const credentialsClientId         = env.parsed.PFSENSE_API_CLIENT;
+const credentialsClientSecret     = env.parsed.PFSENSE_API_TOKEN;
+const checkStatusInterval         = env.parsed.CHECK_STATUS_INTERVAL;
+const checkStatusIndicatorEnabled = env.parsed.CHECK_STATUS_INDICATOR_ENABLED === 'true' ? true : false;
 
 const apiClientInstance = axios.create(
     {
@@ -85,8 +86,10 @@ function apiRequestTemperature() {
 }
 
 function ledIndicatorApiRequest() {
-    // Set bottom LED to a bright, flashing white indicating a API request beeing performed
-    blink1.fadeToRGB(300,255,255,255, blinkBottomLedN);
+    if (checkStatusIndicatorEnabled) {
+        // Set bottom LED to a bright, flashing white indicating a API request beeing performed
+        blink1.fadeToRGB(300, 255, 255, 255, blinkBottomLedN);
+    }
 }
 
 function ledIndicatorError() {
