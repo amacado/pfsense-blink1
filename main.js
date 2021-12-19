@@ -70,7 +70,7 @@ function apiRequestTemperature() {
 function flashError() {
     blink1.writePatternLine(200, 255, 0, 0, 0);
     blink1.writePatternLine(200, 0, 0, 0, 1);
-    blink1.play(0);
+    blink1.playLoop(0, 1, 3);
 }
 
 console.log(Blink1.devices());
