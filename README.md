@@ -1,8 +1,6 @@
 <div align="center">
-
-![blink(1)](/docs/images/blink1-logo.png)
-![pfsense](/docs/images/pfsense-logo.png)
-
+    <img src="/docs/images/blink1-logo.png" alt="blink(1)" height="50"" />
+    <img src="/docs/images/pfsense-logo.png" alt="pfsense" height="50" />
 </div>
 
 ### Preperations & setup
