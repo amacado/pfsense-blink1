@@ -9,6 +9,9 @@
 ### Introduction
 :construction:
 
+### Requirements
+blink(1)mk2 (mk1 & mk3 might work to, not tested)
+
 ### Preperations & setup
 1. Setup [jaredhendrickson13/pfsense-api](https://github.com/jaredhendrickson13/pfsense-api) for [pfsense](https://www.pfsense.org/)
 2. Create an API Token for the REST API (see `jaredhendrickson13/pfsense-api` instructions)

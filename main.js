@@ -5,9 +5,17 @@ const Blink1 = require('node-blink1');
 const env    = require('dotenv').config()
 const log    = require('npmlog')
 
+const blinkTopLedN    = 1;
+const blinkBottomLedN = 2;
+const blinkBothLedN   = 0;
+
 // setup date string for logging https://github.com/npm/npmlog/issues/33#issuecomment-342785666
-Object.defineProperty(log, 'heading', { get: () => { return new Date().toISOString() } })
-log.headingStyle = { bg: '', fg: 'white' }
+Object.defineProperty(log, 'heading', {
+    get: () => {
+        return new Date().toISOString()
+    }
+})
+log.headingStyle = {bg: '', fg: 'white'}
 
 const temperatureThresholds = {
     50: {r: 36, g: 189, b: 46}, // green
@@ -44,6 +52,8 @@ apiClientInstance.interceptors.request.use(function (config) {
 
 
 function apiRequestTemperature() {
+    ledIndicatorApiRequest();
+
     apiClientInstance.get('/api/v1/status/system')
         .then(function (response) {
             // handle success
@@ -55,13 +65,17 @@ function apiRequestTemperature() {
                 }
             }
 
-            log.http('','Fetched temperature %d matches threshold >= %d', measuredTemperature, maximumReachedThreshold);
-            blink1.fadeToRGB(1000, temperatureThresholds[maximumReachedThreshold].r, temperatureThresholds[maximumReachedThreshold].g, temperatureThresholds[maximumReachedThreshold].b);
+            log.http('', 'Fetched temperature %d matches threshold >= %d', measuredTemperature, maximumReachedThreshold);
+            blink1.fadeToRGB(1000,
+                             temperatureThresholds[maximumReachedThreshold].r,
+                             temperatureThresholds[maximumReachedThreshold].g,
+                             temperatureThresholds[maximumReachedThreshold].b,
+                             blinkBothLedN);
 
         })
         .catch(function (error) {
             // handle error
-            flashError();
+            ledIndicatorError();
             log.error(error);
 
         })
@@ -70,14 +84,23 @@ function apiRequestTemperature() {
         });
 }
 
-function flashError() {
+function ledIndicatorApiRequest() {
+    // Set bottom LED to a bright, flashing white indicating a API request beeing performed
+    blink1.fadeToRGB(300,255,255,255, blinkBottomLedN);
+}
+
+function ledIndicatorError() {
     blink1.writePatternLine(200, 255, 0, 0, 0);
     blink1.writePatternLine(200, 0, 0, 0, 1);
     blink1.playLoop(0, 1, 3);
 }
 
+
 const blink1Devices = Blink1.devices();
-if(blink1Devices.length == 0) { log.error('No attached blink(1) devices could be found. Script aborted.'); return; }
+if (blink1Devices.length == 0) {
+    log.error('No attached blink(1) devices could be found. Script aborted.');
+    return;
+}
 
 log.info('', 'Found blink(1) devices %j serials', blink1Devices);
 
