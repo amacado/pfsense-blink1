@@ -77,12 +77,12 @@ function flashError() {
 }
 
 const blink1Devices = Blink1.devices();
-if(blink1Devices.length == 0) { log.error('No attached blink1 devices could be found'); return; }
+if(blink1Devices.length == 0) { log.error('No attached blink(1) devices could be found. Script aborted.'); return; }
 
-log.info('', 'Found blink1 devices %j serials', blink1Devices);
+log.info('', 'Found blink(1) devices %j serials', blink1Devices);
 
 const blink1DeviceSerial = blink1Devices[0];
-log.info('', 'Using blink1 device with serial %s', blink1DeviceSerial);
+log.info('', 'Using blink(1) device with serial %s', blink1DeviceSerial);
 
 var blink1 = new Blink1(blink1DeviceSerial);
 
