@@ -3,6 +3,11 @@ const https  = require('https');
 const axios  = require('axios').default;
 const Blink1 = require('node-blink1');
 const env    = require('dotenv').config()
+const log    = require('npmlog')
+
+// setup date string for logging https://github.com/npm/npmlog/issues/33#issuecomment-342785666
+Object.defineProperty(log, 'heading', { get: () => { return new Date().toISOString() } })
+log.headingStyle = { bg: '', fg: 'white' }
 
 const temperatureThresholds = {
     50: {r: 36, g: 189, b: 46}, // green
@@ -42,8 +47,6 @@ function apiRequestTemperature() {
     apiClientInstance.get('/api/v1/status/system')
         .then(function (response) {
             // handle success
-            console.log(response);
-
             let measuredTemperature     = response.data.data.temp_c;
             let maximumReachedThreshold = null;
             for (let threshold in temperatureThresholds) {
@@ -52,14 +55,14 @@ function apiRequestTemperature() {
                 }
             }
 
-            console.log(measuredTemperature + ' -- ' + maximumReachedThreshold);
-            blink1.fadeToRGB(2000, temperatureThresholds[maximumReachedThreshold].r, temperatureThresholds[maximumReachedThreshold].g, temperatureThresholds[maximumReachedThreshold].b);
+            log.http('','Fetched temperature %d matches threshold >= %d', measuredTemperature, maximumReachedThreshold);
+            blink1.fadeToRGB(1000, temperatureThresholds[maximumReachedThreshold].r, temperatureThresholds[maximumReachedThreshold].g, temperatureThresholds[maximumReachedThreshold].b);
 
         })
         .catch(function (error) {
             // handle error
             flashError();
-            console.log(error);
+            log.error(error);
 
         })
         .then(function () {
@@ -73,8 +76,14 @@ function flashError() {
     blink1.playLoop(0, 1, 3);
 }
 
-console.log(Blink1.devices());
-var blink1 = new Blink1();
+const blink1Devices = Blink1.devices();
+log.info('', 'Found blink1 devices %j serials', blink1Devices);
+
+const blink1DeviceSerial = blink1Devices[0];
+log.info('', 'Using blink1 device with serial %s', blink1DeviceSerial);
+
+var blink1 = new Blink1(blink1DeviceSerial);
+
 
 setInterval(() => {
     apiRequestTemperature();
