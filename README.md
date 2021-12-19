@@ -1,7 +1,12 @@
+# pfsense-blink
+
 <div align="center">
-    <img src="/docs/images/blink1-logo.png" alt="blink(1)" height="50"" />
-    <img src="/docs/images/pfsense-logo.png" alt="pfsense" height="50" />
+    <img src="/docs/images/blink1-logo.png" alt="blink(1)" height="60" />
+    <img src="/docs/images/pfsense-logo.png" alt="pfsense" height="60" />
 </div>
+
+### Introduction
+:todo:
 
 ### Preperations & setup
 1. Setup [jaredhendrickson13/pfsense-api](https://github.com/jaredhendrickson13/pfsense-api) for [pfsense](https://www.pfsense.org/)
@@ -27,5 +32,6 @@ the [bindings](https://forums.balena.io/t/docker-container-cannot-access-dynamic
 
 
 ### Credits
-https://github.com/sandeepmistry/node-blink1
-https://github.com/jaredhendrickson13/pfsense-api
+Special thanks to this projects:
+* https://github.com/sandeepmistry/node-blink1
+* https://github.com/jaredhendrickson13/pfsense-api
