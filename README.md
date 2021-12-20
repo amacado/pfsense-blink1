@@ -3,7 +3,7 @@
 <br />
 <div align="center">
     <img src="/docs/images/blink1-logo.png" alt="blink(1)" height="60" />
-    <img src="/docs/images/pfsense-logo.png" alt="pfsense" height="60" />
+    <img src="/docs/images/pfsense-logo.png" alt="pfSense®" height="60" />
 </div>
 
 ### Introduction
@@ -17,16 +17,16 @@ Watch your pfSense® firewall temperature with blink(1) using Node.js® runtime
 
 ### Preparations & setup
 
-The intended deployment of this script is on another machine (or container) than the pfsense. It's recommended to keep your firewall server as "clean" as possible.
+The intended deployment of this script is on another machine (or container) than the pfSense®. It's recommended to keep your firewall server as "clean" as possible.
 
-1. Setup [jaredhendrickson13/pfsense-api](https://github.com/jaredhendrickson13/pfsense-api) for [pfsense](https://www.pfsense.org/)
+1. Setup [jaredhendrickson13/pfsense-api](https://github.com/jaredhendrickson13/pfsense-api) for [pfSense®](https://www.pfsense.org/)
 2. Create an API Token for the REST API (see `jaredhendrickson13/pfsense-api` instructions)
 3. Install [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0` which is required to access the [blink(1)](https://blink1.thingm.com/) device using the node package [sandeepmistry/node-blink1](https://github.com/sandeepmistry/node-blink1)
 4. Install `nodejs` (see [nodejs.org](https://nodejs.org/en/))
 4. Install `yarn` package manager (see [yarnpkg.com](https://classic.yarnpkg.com/en/))
 4. Connect the [blink(1)](https://blink1.thingm.com/) via USB
 5. Clone this repository (`gh repo clone amacado/pfsense-blink`)
-7. Copy [.env.sample](/.env.sample), rename it to `.env` and paste API credentials and pfsense URI
+7. Copy [.env.sample](/.env.sample), rename it to `.env` and paste API credentials and pfSense® URI
 7. Execute `yarn install`
 9. Run the app using `yarn run start` (or `node dist/index.js`)
 
