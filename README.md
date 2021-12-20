@@ -23,6 +23,7 @@ The intended deployment of this script is on another machine (or container) than
 2. Create an API Token for the REST API (see `jaredhendrickson13/pfsense-api` instructions)
 3. Install [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0` which is required to access the [blink(1)](https://blink1.thingm.com/) device using the node package [sandeepmistry/node-blink1](https://github.com/sandeepmistry/node-blink1)
 4. Install `nodejs` (see [nodejs.org](https://nodejs.org/en/))
+4. Install `yarn` package manager (see [yarnpkg.com](https://classic.yarnpkg.com/en/))
 4. Connect the [blink(1)](https://blink1.thingm.com/) via USB
 5. Clone this repository (`gh repo clone amacado/pfsense-blink`)
 7. Copy [.env.sample](/.env.sample), rename it to `.env` and paste API credentials and pfsense URI
