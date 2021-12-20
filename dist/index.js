@@ -12,7 +12,6 @@ const Blink1 = require('node-blink1');
 const blinkTopLedN = 1;
 const blinkBottomLedN = 2;
 const blinkBothLedN = 0;
-// setup date string for logging https://github.com/npm/npmlog/issues/33#issuecomment-342785666
 Object.defineProperty(npmlog_1.default, 'heading', {
     get: () => {
         return new Date().toISOString();
@@ -22,7 +21,7 @@ npmlog_1.default.headingStyle = { bg: '', fg: 'white' };
 const temperatureThresholds = [
     { threshold: 50, color: { red: 36, green: 189, blue: 46 } },
     { threshold: 60, color: { red: 246, green: 225, blue: 36 } },
-    { threshold: 70, color: { red: 188, green: 19, blue: 19 } }, // red
+    { threshold: 70, color: { red: 188, green: 19, blue: 19 } },
 ];
 if (process.env.error) {
     throw process.env.error;
@@ -30,13 +29,14 @@ if (process.env.error) {
 const pfSenseApiBaseUrl = process.env.PFSENSE_API_BASE_URL;
 const credentialsClientId = process.env.PFSENSE_API_CLIENT;
 const credentialsClientSecret = process.env.PFSENSE_API_TOKEN;
+const blinkSerial = process.env.BLINK_SERIAL;
 const checkStatusInterval = Number.parseInt((_a = process.env.CHECK_STATUS_INTERVAL) !== null && _a !== void 0 ? _a : "5000");
 const checkStatusIndicatorEnabled = process.env.CHECK_STATUS_INDICATOR_ENABLED === 'true' ? true : false;
 const apiClientInstance = axios_1.default.create({
     baseURL: pfSenseApiBaseUrl,
     timeout: 1000,
     httpsAgent: new https_1.default.Agent({
-        rejectUnauthorized: false // allow self sign certificates
+        rejectUnauthorized: false
     })
 });
 apiClientInstance.interceptors.request.use(function (config) {
@@ -45,14 +45,12 @@ apiClientInstance.interceptors.request.use(function (config) {
     }
     return config;
 }, function (error) {
-    // Do something with request error
     return Promise.reject(error);
 });
 function apiRequestTemperature() {
     ledIndicatorApiRequest();
     apiClientInstance.get('/api/v1/status/system')
         .then(function (response) {
-        // handle success
         let measuredTemperature = response.data.data.temp_c;
         let maximumReachedThreshold;
         temperatureThresholds.forEach((temperatureThreshold) => {
@@ -66,17 +64,14 @@ function apiRequestTemperature() {
         }
     })
         .catch(function (error) {
-        // handle error
         ledIndicatorError();
         npmlog_1.default.error('', error);
     })
         .then(function () {
-        // always executed
     });
 }
 function ledIndicatorApiRequest() {
     if (checkStatusIndicatorEnabled) {
-        // Set bottom LED to a bright, flashing white indicating a API request beeing performed
         blink1.fadeToRGB(300, 255, 255, 255, blinkBottomLedN);
     }
 }
@@ -90,8 +85,8 @@ if (blink1Devices.length == 0) {
     npmlog_1.default.error('', 'No attached blink(1) devices could be found. Script aborted.');
     process.abort();
 }
-npmlog_1.default.info('', 'Found blink(1) devices %j serials', blink1Devices);
-const blink1DeviceSerial = blink1Devices[0];
+npmlog_1.default.info('', 'Found blink(1) devices with serials %j ', blink1Devices);
+const blink1DeviceSerial = blinkSerial !== null && blinkSerial !== void 0 ? blinkSerial : blink1Devices[0];
 npmlog_1.default.info('', 'Using blink(1) device with serial %s', blink1DeviceSerial);
 var blink1 = new Blink1(blink1DeviceSerial);
 setInterval(() => {
