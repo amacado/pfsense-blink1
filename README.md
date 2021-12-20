@@ -8,7 +8,7 @@
 
 ### Introduction
 
-Watch your pfsense temperature with blink(1)
+Watch your pfSense® firewall temperature with blink(1) using Node.js® runtime
 
 ### Requirements
 
