@@ -18,6 +18,7 @@ Object.defineProperty(log, 'heading', {
         return new Date().toISOString()
     }
 })
+
 log.headingStyle = {bg: '', fg: 'white'}
 
 const temperatureThresholds: TemperatureThreshold[] = [

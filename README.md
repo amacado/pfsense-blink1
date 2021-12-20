@@ -21,18 +21,18 @@ The intended deployment of this script is on another machine (or container) than
 
 1. Setup [jaredhendrickson13/pfsense-api](https://github.com/jaredhendrickson13/pfsense-api) for [pfsense](https://www.pfsense.org/)
 2. Create an API Token for the REST API (see `jaredhendrickson13/pfsense-api` instructions)
-3. Install [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0` which is required to access the [blink(1)](https://blink1.thingm.com/) device using the node package [sandeepmistry/node-blink1](https://github.com/sandeepmistry/node-blink1)
+3. _Optional(?)_: Install [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0` which is required to access the [blink(1)](https://blink1.thingm.com/) device using the node package [sandeepmistry/node-blink1](https://github.com/sandeepmistry/node-blink1)
 4. Install `nodejs` (see [nodejs.org](https://nodejs.org/en/))
 4. Connect the [blink(1)](https://blink1.thingm.com/) via USB
-5. Clone this repository (`gh repo clone amacado/pfsense-blink`)
-6. `yarn install`
-7. Copy [.env.sample](/.env.sample), rename it to `.env` and paste API credentials and pfsense URI
+5. Clone this repository (`gh repo clone amacado/pfsense-blink`) or download at least the [/dist/](/dist/) directory
+7. Copy [_dist/_.env.sample](/.env.sample), rename it to `.env` and paste API credentials and pfsense URI
 7. Run the app using `yarn run start` (or `node dist/main.js`)
 
-### Development
+### Development or go build yourself
 
-* Use `yarn serve` for live development
-* Execute `yarn build` to build the project and create compiled project in [/dist/](/dist/)
+- Execute `yarn install`
+- Use `yarn serve` for live development
+- Execute `yarn build` to build the project and create compiled project in [/dist/](/dist/)
 
 ### Known problems
 
