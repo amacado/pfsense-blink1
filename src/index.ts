@@ -34,6 +34,7 @@ if (process.env.error) {
 const pfSenseApiBaseUrl = process.env.PFSENSE_API_BASE_URL;
 const credentialsClientId = process.env.PFSENSE_API_CLIENT;
 const credentialsClientSecret = process.env.PFSENSE_API_TOKEN;
+const blinkSerial = process.env.BLINK_SERIAL;
 const checkStatusInterval: number = Number.parseInt(process.env.CHECK_STATUS_INTERVAL ?? "5000");
 const checkStatusIndicatorEnabled = process.env.CHECK_STATUS_INDICATOR_ENABLED === 'true' ? true : false;
 
@@ -115,9 +116,9 @@ if (blink1Devices.length == 0) {
     process.abort();
 }
 
-log.info('', 'Found blink(1) devices %j serials', blink1Devices);
+log.info('', 'Found blink(1) devices with serials %j ', blink1Devices);
 
-const blink1DeviceSerial = blink1Devices[0];
+const blink1DeviceSerial: string = blinkSerial ?? blink1Devices[0];
 log.info('', 'Using blink(1) device with serial %s', blink1DeviceSerial);
 
 var blink1 = new Blink1(blink1DeviceSerial);
