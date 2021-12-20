@@ -21,7 +21,7 @@ The intended deployment of this script is on another machine (or container) than
 
 1. Setup [jaredhendrickson13/pfsense-api](https://github.com/jaredhendrickson13/pfsense-api) for [pfsense](https://www.pfsense.org/)
 2. Create an API Token for the REST API (see `jaredhendrickson13/pfsense-api` instructions)
-3. _Optional(?)_: Install [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0` which is required to access the [blink(1)](https://blink1.thingm.com/) device using the node package [sandeepmistry/node-blink1](https://github.com/sandeepmistry/node-blink1)
+3. Install [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0` which is required to access the [blink(1)](https://blink1.thingm.com/) device using the node package [sandeepmistry/node-blink1](https://github.com/sandeepmistry/node-blink1)
 4. Install `nodejs` (see [nodejs.org](https://nodejs.org/en/))
 4. Connect the [blink(1)](https://blink1.thingm.com/) via USB
 5. Clone this repository (`gh repo clone amacado/pfsense-blink`)
@@ -47,6 +47,12 @@ TypeError: cannot open device with path /dev/hidraw0
 
 If you're running this script in a docker container you might want to check the [bindings](https://forums.balena.io/t/docker-container-cannot-access-dynamically-plugged-usb-devices/4277) and
 `mount /dev:/dev` which allows the container to access the device.
+
+##### Error `libusb-1.0.so.0: cannot open shared object file`
+```bash
+Error: libusb-1.0.so.0: cannot open shared object file: No such file or directory
+```
+This error occurs if you haven't installed [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0`.
 
 ### Credits
 
