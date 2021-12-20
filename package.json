@@ -14,8 +14,8 @@
   },
   "scripts": {
     "serve": "ts-node ./src/index.ts",
-    "build": "webpack",
-    "start": "node ./dist/bundle.js"
+    "build": "tsc --removeComments",
+    "start": "node ./dist/index.js"
   },
   "devDependencies": {
     "debug": "^4.3.3",

@@ -24,9 +24,10 @@ The intended deployment of this script is on another machine (or container) than
 3. _Optional(?)_: Install [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0` which is required to access the [blink(1)](https://blink1.thingm.com/) device using the node package [sandeepmistry/node-blink1](https://github.com/sandeepmistry/node-blink1)
 4. Install `nodejs` (see [nodejs.org](https://nodejs.org/en/))
 4. Connect the [blink(1)](https://blink1.thingm.com/) via USB
-5. Clone this repository (`gh repo clone amacado/pfsense-blink`) or download at least the [/dist/](/dist/) directory
-7. Copy [_dist/_.env.sample](/.env.sample), rename it to `.env` and paste API credentials and pfsense URI
-7. Run the app using `yarn run start` (or `node dist/main.js`)
+5. Clone this repository (`gh repo clone amacado/pfsense-blink`)
+7. Copy [.env.sample](/.env.sample), rename it to `.env` and paste API credentials and pfsense URI
+7. Execute `yarn install`
+9. Run the app using `yarn run start` (or `node dist/index.js`)
 
 ### Development or go build yourself
 
