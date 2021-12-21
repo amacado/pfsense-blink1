@@ -26,7 +26,7 @@ The intended deployment of this script is on another machine (or container) than
 4. Install `yarn` package manager (see [yarnpkg.com](https://classic.yarnpkg.com/en/))
 4. Connect the [blink(1)](https://blink1.thingm.com/) via USB
 5. Clone this repository (`gh repo clone amacado/pfsense-blink`)
-7. Copy [.env.sample](/.env.sample), rename it to `.env` and paste API credentials and pfSense® URI
+7. Copy [`config/config.sample.json5`](/config/config.sample.json5), rename it to `config/config.json5` and paste API credentials and pfSense® URI (see [json5.org](https://json5.org/) for more information about the this next level json project)
 7. Execute `yarn install`
 9. Run the app using `yarn run start` (or `node dist/index.js`)
 
@@ -50,9 +50,11 @@ If you're running this script in a docker container you might want to check the 
 `mount /dev:/dev` which allows the container to access the device.
 
 ##### Error `libusb-1.0.so.0: cannot open shared object file`
+
 ```bash
 Error: libusb-1.0.so.0: cannot open shared object file: No such file or directory
 ```
+
 This error occurs if you haven't installed [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0`.
 
 ### Credits
