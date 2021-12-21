@@ -1,25 +1,10 @@
 import 'dotenv/config'
 
-import https from 'https';
-import axios from 'axios';
-import log from 'npmlog';
-
+import Log from './helper/Log';
+import apiClientInstance from './helper/ApiClient';
+import Blink1 from './types/Blink1';
 import {TemperatureThreshold} from './types/TemperatureThreshold';
-
-const Blink1: any = require('node-blink1');
-
-const blinkTopLedN = 1;
-const blinkBottomLedN = 2;
-const blinkBothLedN = 0;
-
-// setup date string for logging https://github.com/npm/npmlog/issues/33#issuecomment-342785666
-Object.defineProperty(log, 'heading', {
-    get: () => {
-        return new Date().toISOString()
-    }
-})
-
-log.headingStyle = {bg: '', fg: 'white'}
+import {Blink1LedPosition} from './enums/Blink1LedPosition';
 
 const temperatureThresholds: TemperatureThreshold[] = [
     {threshold: 50, color: {red: 36, green: 189, blue: 46}}, // green
@@ -31,33 +16,14 @@ if (process.env.error) {
     throw process.env.error
 }
 
-const pfSenseApiBaseUrl = process.env.PFSENSE_API_BASE_URL;
-const credentialsClientId = process.env.PFSENSE_API_CLIENT;
-const credentialsClientSecret = process.env.PFSENSE_API_TOKEN;
 const blinkSerial = process.env.BLINK_SERIAL;
 const checkStatusInterval: number = Number.parseInt(process.env.CHECK_STATUS_INTERVAL ?? "5000");
-const checkStatusIndicatorEnabled = process.env.CHECK_STATUS_INDICATOR_ENABLED === 'true' ? true : false;
 
-const apiClientInstance = axios.create(
-    {
-        baseURL: pfSenseApiBaseUrl,
-        timeout: 1000,
-        httpsAgent: new https.Agent(
-            {
-                rejectUnauthorized: false // allow self sign certificates
-            })
-    });
-
-apiClientInstance.interceptors.request.use(function (config) {
-    if (config.headers != undefined) {
-        config.headers.Authorization = credentialsClientId + ' ' + credentialsClientSecret;
-    }
-
-    return config;
-}, function (error) {
-    // Do something with request error
-    return Promise.reject(error);
-});
+let checkStatusIndicator: Blink1LedPosition = (<any>Blink1LedPosition)[process.env.CHECK_STATUS_INDICATOR ?? "Bottom"]; // default value when no configuration is set
+if (checkStatusIndicator == undefined) {
+    checkStatusIndicator = Blink1LedPosition.Bottom; // default value when parsing fails
+    Log.warn('', 'Invalid configuration value for CHECK_STATUS_INDICATOR, fallback to default value of "%s"', Blink1LedPosition[checkStatusIndicator])
+}
 
 
 function apiRequestTemperature() {
@@ -76,19 +42,19 @@ function apiRequestTemperature() {
             })
 
             if (maximumReachedThreshold) {
-                log.http('', 'Fetched temperature %d matches threshold >= %d', measuredTemperature, maximumReachedThreshold.threshold);
+                Log.http('', 'Fetched temperature %d matches threshold >= %d', measuredTemperature, maximumReachedThreshold.threshold);
 
                 blink1.fadeToRGB(1000,
                     maximumReachedThreshold.color.red,
                     maximumReachedThreshold.color.green,
                     maximumReachedThreshold.color.blue,
-                    blinkBothLedN);
+                    Blink1LedPosition.All);
             }
         })
         .catch(function (error) {
             // handle error
             ledIndicatorError();
-            log.error('', error);
+            Log.error('', error);
 
         })
         .then(function () {
@@ -97,9 +63,9 @@ function apiRequestTemperature() {
 }
 
 function ledIndicatorApiRequest() {
-    if (checkStatusIndicatorEnabled) {
+    if (checkStatusIndicator != Blink1LedPosition.None) {
         // Set bottom LED to a bright, flashing white indicating a API request beeing performed
-        blink1.fadeToRGB(300, 255, 255, 255, blinkBottomLedN);
+        blink1.fadeToRGB(300, 255, 255, 255, checkStatusIndicator);
     }
 }
 
@@ -109,17 +75,16 @@ function ledIndicatorError() {
     blink1.playLoop(0, 1, 3);
 }
 
-
 const blink1Devices = Blink1.devices();
 if (blink1Devices.length == 0) {
-    log.error('', 'No attached blink(1) devices could be found. Script aborted.');
+    Log.error('', 'No attached blink(1) devices could be found. Script aborted.');
     process.abort();
 }
 
-log.info('', 'Found blink(1) devices with serials %j ', blink1Devices);
+Log.info('', 'Found blink(1) devices with serials %j ', blink1Devices);
 
 const blink1DeviceSerial: string = blinkSerial ?? blink1Devices[0];
-log.info('', 'Using blink(1) device with serial %s', blink1DeviceSerial);
+Log.info('', 'Using blink(1) device with serial %s', blink1DeviceSerial);
 
 var blink1 = new Blink1(blink1DeviceSerial);
 
