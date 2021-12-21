@@ -9,7 +9,7 @@
     // required, Client id which can be created using the instructions in jaredhendrickson13/pfsense-api
     "client": "clientid",
     // required, API token which can be created using the instructions in jaredhendrickson13/pfsense-api
-    "token": "secret-token",
+    "token": "secret",
     // optional, Status check interval in milliseconds (recommended setting >1000)
     "interval": 1000,
   },

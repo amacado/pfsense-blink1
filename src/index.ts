@@ -20,7 +20,6 @@ if (checkStatusIndicator == undefined) {
     Log.warn('', 'Invalid configuration value for CHECK_STATUS_INDICATOR, fallback to default value of "%s"', Blink1LedPosition[checkStatusIndicator])
 }
 
-
 function apiRequestTemperature() {
     ledIndicatorApiRequest();
 
