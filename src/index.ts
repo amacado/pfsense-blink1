@@ -8,7 +8,7 @@ import {Blink1LedPosition} from './enums/Blink1LedPosition';
 const temperatureThresholds: TemperatureThreshold[] = [
     {threshold: 50, color: {red: 36, green: 189, blue: 46}}, // green
     {threshold: 60, color: {red: 246, green: 225, blue: 36}}, // yellow
-    {threshold: 70, color: {red: 188, green: 19, blue: 19}}, // red
+    {threshold: 70, color: {red: 188, green: 19, blue: 18}}, // red
 ]
 
 const blinkSerial = ConfigurationManager.get('blink1:serial')
