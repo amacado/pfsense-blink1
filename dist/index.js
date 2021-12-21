@@ -18,7 +18,7 @@ const checkStatusInterval = Number.parseInt(ConfigurationManager_1.default.get('
 let checkStatusIndicator = Blink1LedPosition_1.Blink1LedPosition[ConfigurationManager_1.default.get('indicator:apiRequest:ledPosition')];
 if (checkStatusIndicator == undefined) {
     checkStatusIndicator = Blink1LedPosition_1.Blink1LedPosition.Bottom;
-    Log_1.default.warn('', 'Invalid configuration value for CHECK_STATUS_INDICATOR, fallback to default value of "%s"', Blink1LedPosition_1.Blink1LedPosition[checkStatusIndicator]);
+    Log_1.default.warn('', 'Invalid configuration value for indicator:apiRequest:ledPosition, fallback to default value of "%s"', Blink1LedPosition_1.Blink1LedPosition[checkStatusIndicator]);
 }
 function apiRequestTemperature() {
     ledIndicatorApiRequest();
