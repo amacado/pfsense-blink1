@@ -1,5 +1,4 @@
-import 'dotenv/config'
-
+import ConfigurationManager from './helper/ConfigurationManager';
 import Log from './helper/Log';
 import apiClientInstance from './helper/ApiClient';
 import Blink1 from './types/Blink1';
@@ -12,14 +11,10 @@ const temperatureThresholds: TemperatureThreshold[] = [
     {threshold: 70, color: {red: 188, green: 19, blue: 19}}, // red
 ]
 
-if (process.env.error) {
-    throw process.env.error
-}
+const blinkSerial = ConfigurationManager.get('blink1:serial')
+const checkStatusInterval: number = Number.parseInt(ConfigurationManager.get('api:interval'));
 
-const blinkSerial = process.env.BLINK_SERIAL;
-const checkStatusInterval: number = Number.parseInt(process.env.CHECK_STATUS_INTERVAL ?? "5000");
-
-let checkStatusIndicator: Blink1LedPosition = (<any>Blink1LedPosition)[process.env.CHECK_STATUS_INDICATOR ?? "Bottom"]; // default value when no configuration is set
+let checkStatusIndicator: Blink1LedPosition = (<any>Blink1LedPosition)[ConfigurationManager.get('indicator:apiRequest:ledPosition')];
 if (checkStatusIndicator == undefined) {
     checkStatusIndicator = Blink1LedPosition.Bottom; // default value when parsing fails
     Log.warn('', 'Invalid configuration value for CHECK_STATUS_INDICATOR, fallback to default value of "%s"', Blink1LedPosition[checkStatusIndicator])

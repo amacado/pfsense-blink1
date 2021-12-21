@@ -1,5 +1,5 @@
 # Project exclude paths
 /node_modules/
 /.idea/
-.env
 /*.log
+/config/config.json5

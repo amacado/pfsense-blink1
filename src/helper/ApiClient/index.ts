@@ -1,9 +1,10 @@
 import axios from 'axios';
 import https from 'https';
+import ConfigurationManager from '../ConfigurationManager';
 
-const pfSenseApiBaseUrl = process.env.PFSENSE_API_BASE_URL;
-const credentialsClientId = process.env.PFSENSE_API_CLIENT;
-const credentialsClientSecret = process.env.PFSENSE_API_TOKEN;
+const pfSenseApiBaseUrl = ConfigurationManager.get('api:baseUrl');
+const credentialsClientId = ConfigurationManager.get('api:client');
+const credentialsClientSecret = ConfigurationManager.get('api:token');
 
 const apiClientInstance = axios.create(
     {

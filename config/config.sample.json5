@@ -1,0 +1,23 @@
+{
+  "blink1": {
+    // optional, use specific blink(1) device identified via serial. If parameter is not set, the first blink(1) device will be used
+    "serial": "string"
+  },
+  "api": {
+    // required, absolute URI where your pfsense is running
+    "baseUrl": "https://xxx.local",
+    // required, Client id which can be created using the instructions in jaredhendrickson13/pfsense-api
+    "client": "clientid",
+    // required, API token which can be created using the instructions in jaredhendrickson13/pfsense-api
+    "token": "secret-token",
+    // optional, Status check interval in milliseconds (recommended setting >1000)
+    "interval": 1000,
+  },
+  "indicator": {
+    // optional, indicator when an api request is beeing performed
+    "apiRequest": {
+      // optional, choose which LED should flash (blink(1) mk2+ only), valid values are Blink1LedPosition{Top|Bottom|All|None}
+      "ledPosition": "Bottom"
+    }
+  }
+}
