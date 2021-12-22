@@ -36,11 +36,11 @@ The intended deployment of this script is on another machine (or container) than
 - Use `yarn serve` for live development
 - Execute `yarn build` to build the project and create compiled project in [/dist/](/dist/)
 - Setup [`pre-push` hook](https://www.atlassian.com/git/tutorials/git-hooks) with following script
-  ```bash
+  ```shell
   #!/bin/sh
   yarn build
   git add dist/
-  git commit -m "build sources via pre-push hook"
+  git diff-index --quiet HEAD || git commit -m ":octocat: build sources via pre-push hook"
   
   exit 0
   ```
