@@ -58,10 +58,11 @@ if (blink1Devices.length == 0) {
     Log_1.default.error('', 'No attached blink(1) devices could be found. Script aborted.');
     process.abort();
 }
-Log_1.default.info('', 'Found blink(1) devices with serials %j ', blink1Devices);
+Log_1.default.info('', 'Found %d blink(1) devices with serials %j ', blink1Devices.length, blink1Devices);
 const blink1DeviceSerial = blinkSerial !== null && blinkSerial !== void 0 ? blinkSerial : blink1Devices[0];
 Log_1.default.info('', 'Using blink(1) device with serial %s', blink1DeviceSerial);
 var blink1 = new Blink1_1.default(blink1DeviceSerial);
+Log_1.default.info('', 'Preparing status request interval..');
 setInterval(() => {
     apiRequestTemperature();
 }, checkStatusInterval);
