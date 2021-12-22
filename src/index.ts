@@ -75,13 +75,14 @@ if (blink1Devices.length == 0) {
     process.abort();
 }
 
-Log.info('', 'Found blink(1) devices with serials %j ', blink1Devices);
+Log.info('', 'Found %d blink(1) devices with serials %j ', blink1Devices.length, blink1Devices);
 
 const blink1DeviceSerial: string = blinkSerial ?? blink1Devices[0];
 Log.info('', 'Using blink(1) device with serial %s', blink1DeviceSerial);
 
 var blink1 = new Blink1(blink1DeviceSerial);
 
+Log.info('', 'Preparing status request interval..')
 setInterval(() => {
     apiRequestTemperature();
 }, checkStatusInterval)
