@@ -27,8 +27,9 @@ The intended deployment of this script is on another machine (or container) than
 4. Connect the [blink(1)](https://blink1.thingm.com/) via USB
 5. Clone this repository (`gh repo clone amacado/pfsense-blink`)
 7. Copy [`config/config.sample.json5`](/config/config.sample.json5), rename it to `config/config.json5` and paste API credentials and pfSense® URI (see [json5.org](https://json5.org/) for more information about the this next level json project)
-7. Execute `yarn install`
-9. Run the app using `yarn run start` (or `node dist/index.js`)
+8. Adjust settings in `config/config.json5` to your needs. The default values are defined in [`ConfigurationManager`](/src/helper/ConfigurationManager/index.ts)
+9. Execute `yarn install`
+10. Run the app using `yarn run start` (or `node dist/index.js`)
 
 ### Development or go build yourself
 

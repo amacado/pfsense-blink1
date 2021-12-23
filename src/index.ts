@@ -2,15 +2,18 @@ import ConfigurationManager from './helper/ConfigurationManager';
 import Log from './helper/Log';
 import apiClientInstance from './helper/ApiClient';
 import Blink1 from './types/Blink1';
+import _ from 'lodash';
 import {TemperatureThreshold} from './types/TemperatureThreshold';
 import {Blink1LedPosition} from './enums/Blink1LedPosition';
 
-const temperatureThresholds: TemperatureThreshold[] = [
-    {threshold: 50, color: {red: 36, green: 189, blue: 46}}, // green
-    {threshold: 60, color: {red: 246, green: 225, blue: 36}}, // yellow
-    {threshold: 70, color: {red: 188, green: 19, blue: 18}}, // red
-]
+Log.verbose('','Import completed.');
 
+//#region Configuration
+
+Log.verbose('','Start loading configuration and default settings..');
+
+// load temperature thresholds and order them by ascending threshold to ensure the loop through those values work
+const temperatureThresholds: TemperatureThreshold[] = _.orderBy(ConfigurationManager.get('indicator:temperatureThresholds'), ['threshold'], 'asc');
 const blinkSerial = ConfigurationManager.get('blink1:serial')
 const checkStatusInterval: number = Number.parseInt(ConfigurationManager.get('api:interval'));
 
@@ -19,6 +22,20 @@ if (checkStatusIndicator == undefined) {
     checkStatusIndicator = Blink1LedPosition.Bottom; // default value when parsing fails
     Log.warn('', 'Invalid configuration value for indicator:apiRequest:ledPosition, fallback to default value of "%s"', Blink1LedPosition[checkStatusIndicator])
 }
+
+const blink1Devices = Blink1.devices();
+if (blink1Devices.length == 0) {
+    Log.error('', 'No attached blink(1) devices could be found. Script aborted.');
+    process.abort();
+}
+
+// determine blink device serial based on user setting or default value (the first device found)
+const blink1DeviceSerial: string = blinkSerial ?? blink1Devices[0];
+const blink1 = new Blink1(blink1DeviceSerial);
+
+Log.verbose('','Loading configuration and default settings completed.');
+
+//#endregion Configuration
 
 function apiRequestTemperature() {
     ledIndicatorApiRequest();
@@ -69,20 +86,11 @@ function ledIndicatorError() {
     blink1.playLoop(0, 1, 3);
 }
 
-const blink1Devices = Blink1.devices();
-if (blink1Devices.length == 0) {
-    Log.error('', 'No attached blink(1) devices could be found. Script aborted.');
-    process.abort();
-}
-
 Log.info('', 'Found %d blink(1) devices with serials %j ', blink1Devices.length, blink1Devices);
-
-const blink1DeviceSerial: string = blinkSerial ?? blink1Devices[0];
 Log.info('', 'Using blink(1) device with serial %s', blink1DeviceSerial);
+Log.info('', 'Preparing status request interval (%dms)..', checkStatusInterval)
 
-var blink1 = new Blink1(blink1DeviceSerial);
-
-Log.info('', 'Preparing status request interval..')
+// Infinite loop to call the API and react on thresholds
 setInterval(() => {
     apiRequestTemperature();
 }, checkStatusInterval)

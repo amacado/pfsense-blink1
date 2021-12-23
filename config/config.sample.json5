@@ -14,10 +14,20 @@
     "interval": 5000,
   },
   "indicator": {
+    // optional, configure temperature thresholds (in Celsius) and a indication color (rgb value) (see /types/TemperatureThreshold)
+    "temperatureThresholds": [
+      { threshold: 0, color: { red: 36, green: 189, blue: 46 } },  // green
+      { threshold: 60, color: { red: 246, green: 225, blue: 36 } }, // yellow
+      { threshold: 70, color: { red: 188, green: 19, blue: 18 } },  // red
+    ],
     // optional, indicator when an api request is beeing performed
     "apiRequest": {
       // optional, choose which LED should flash (blink(1) mk2+ only), valid values are Blink1LedPosition{Top|Bottom|All|None}
       "ledPosition": "Bottom"
     }
+  },
+  "log": {
+    // optional, set minimum log level, valid values are {silly|verbose|info|http|warn|error|silent} (see npmlog)
+    "level": "info"
   }
 }

@@ -11,9 +11,17 @@ nconf.defaults({
         'interval': 5000
     },
     'indicator': {
+        'temperatureThresholds': [
+            { threshold: 0, color: { red: 36, green: 189, blue: 46 } },  // green
+            { threshold: 60, color: { red: 246, green: 225, blue: 36 } }, // yellow
+            { threshold: 70, color: { red: 188, green: 19, blue: 18 } },  // red
+        ],
         'apiRequest': {
             'ledPosition': 'Bottom'
         }
+    },
+    'log': {
+        'level': 'info'
     }
 });
 
