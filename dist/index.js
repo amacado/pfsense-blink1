@@ -9,7 +9,7 @@ const ApiClient_1 = __importDefault(require("./helper/ApiClient"));
 const Blink1 = require("node-blink1");
 const lodash_1 = __importDefault(require("lodash"));
 const Blink1LedIndex_1 = require("./enums/Blink1LedIndex");
-Log_1.default.verbose('', 'Import completed.');
+Log_1.default.verbose('', 'Import completed');
 Log_1.default.verbose('', 'Start loading configuration and default settings..');
 const temperatureThresholds = lodash_1.default.orderBy(ConfigurationManager_1.default.get('indicator:temperatureThresholds'), ['threshold'], 'asc');
 const blinkSerial = ConfigurationManager_1.default.get('blink1:serial');
@@ -46,9 +46,8 @@ function apiRequestTemperature() {
     })
         .catch(function (error) {
         ledIndicatorError();
-        Log_1.default.error('', error);
-    })
-        .then(function () {
+        Log_1.default.error('', error.message);
+        Log_1.default.verbose('', error);
     });
 }
 function ledIndicatorApiRequest() {
@@ -57,6 +56,9 @@ function ledIndicatorApiRequest() {
     }
 }
 function ledIndicatorError() {
+    blink1.writePatternLine(200, 255, 0, 0, 0);
+    blink1.writePatternLine(200, 0, 0, 0, 1);
+    blink1.playLoop(0, 1, 3);
 }
 Log_1.default.info('', 'Found %d blink(1) devices with serials %j ', blink1Devices.length, blink1Devices);
 Log_1.default.info('', 'Using blink(1) device with serial %s', blink1DeviceSerial);

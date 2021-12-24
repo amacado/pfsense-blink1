@@ -8,11 +8,12 @@ const ConfigurationManager_1 = __importDefault(require("../ConfigurationManager"
 const pfSenseApiBaseUrl = ConfigurationManager_1.default.get('api:baseUrl');
 const credentialsClientId = ConfigurationManager_1.default.get('api:client');
 const credentialsClientSecret = ConfigurationManager_1.default.get('api:token');
+const apiHttpsAgentRejectUnauthorized = ConfigurationManager_1.default.get('api:httpsAgent:rejectUnauthorized');
 const apiClientInstance = axios_1.default.create({
     baseURL: pfSenseApiBaseUrl,
     timeout: 1000,
     httpsAgent: new https_1.default.Agent({
-        rejectUnauthorized: false
+        rejectUnauthorized: apiHttpsAgentRejectUnauthorized
     })
 });
 apiClientInstance.interceptors.request.use(function (config) {

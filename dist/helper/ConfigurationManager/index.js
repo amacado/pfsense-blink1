@@ -5,7 +5,10 @@ nconf.argv();
 nconf.file({ file: 'config/config.json5', format: require('json5') });
 nconf.defaults({
     'api': {
-        'interval': 5000
+        'interval': 5000,
+        'httpsAgent': {
+            'rejectUnauthorized': true
+        }
     },
     'indicator': {
         'temperatureThresholds': [
