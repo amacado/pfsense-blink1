@@ -7,8 +7,7 @@ import _ from 'lodash';
 import {TemperatureThreshold} from './types/TemperatureThreshold';
 import {Blink1LedIndex} from './enums/Blink1LedIndex';
 
-Log.verbose('', 'Import completed.');
-
+Log.verbose('', 'Import completed');
 
 //#region Configuration
 
@@ -68,11 +67,8 @@ function apiRequestTemperature() {
         .catch(function (error) {
             // handle error
             ledIndicatorError();
-            Log.error('', error);
-
-        })
-        .then(function () {
-            // always executed
+            Log.error('', error.message);
+            Log.verbose('', error)
         });
 }
 
@@ -84,12 +80,12 @@ function ledIndicatorApiRequest() {
 }
 
 function ledIndicatorError() {
-    /*
     blink1.writePatternLine(200, 255, 0, 0, 0);
     blink1.writePatternLine(200, 0, 0, 0, 1);
     blink1.playLoop(0, 1, 3);
-     */
 }
+
+//#region Script execution
 
 Log.info('', 'Found %d blink(1) devices with serials %j ', blink1Devices.length, blink1Devices);
 Log.info('', 'Using blink(1) device with serial %s', blink1DeviceSerial);
@@ -103,4 +99,6 @@ Log.info('', 'Preparing status request interval (%dms)..', checkStatusInterval)
 setInterval(() => {
     apiRequestTemperature();
 }, checkStatusInterval)
+
+//#endregion Script execution
 

@@ -67,6 +67,14 @@ Error: libusb-1.0.so.0: cannot open shared object file: No such file or director
 
 This error occurs if you haven't installed [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0`.
 
+##### ERR! self signed certificate
+```bash
+ERR! self signed certificate
+```
+This error occurs when the SSL certificate which should secure your REST API connection
+is self signed. There are two solutions for this problem: Either authorize your SSL certificate
+or skip the check by setting configuration option `api.httpsAgent.rejectUnauthorized = false` (see [`/config/config.sample.json5`](/config/config.sample.json5)).
+
 ### Credits
 
 Special thanks to this projects:

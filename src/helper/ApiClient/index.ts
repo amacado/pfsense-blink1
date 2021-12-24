@@ -5,6 +5,7 @@ import ConfigurationManager from '../ConfigurationManager';
 const pfSenseApiBaseUrl = ConfigurationManager.get('api:baseUrl');
 const credentialsClientId = ConfigurationManager.get('api:client');
 const credentialsClientSecret = ConfigurationManager.get('api:token');
+const apiHttpsAgentRejectUnauthorized = ConfigurationManager.get('api:httpsAgent:rejectUnauthorized');
 
 const apiClientInstance = axios.create(
     {
@@ -12,7 +13,7 @@ const apiClientInstance = axios.create(
         timeout: 1000,
         httpsAgent: new https.Agent(
             {
-                rejectUnauthorized: false // allow self sign certificates
+                rejectUnauthorized: apiHttpsAgentRejectUnauthorized // allow/disallow self sign certificates
             })
     });
 

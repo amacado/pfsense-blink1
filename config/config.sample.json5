@@ -12,6 +12,10 @@
     "token": "secret",
     // optional, Status check interval in milliseconds (recommended setting >1000)
     "interval": 5000,
+    "httpsAgent": {
+      // optional, allow/disallow self signed ssl certificates (should be set to true for security reasons)
+      "rejectUnauthorized": true
+    }
   },
   "indicator": {
     // optional, configure temperature thresholds (in Celsius) and a indication color (rgb value) (see /types/TemperatureThreshold)
