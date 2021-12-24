@@ -64,11 +64,6 @@ blink1.version(function (version) {
     Log_1.default.verbose('', 'Version number of blink(1) device: %d', version.toString());
 });
 Log_1.default.info('', 'Preparing status request interval (%dms)..', checkStatusInterval);
-blink1.rgb(2, function (r, g, b) {
-    Log_1.default.info('', '%d %d %d', r, g, b);
-});
-blink1.writeNote(1, 'aaa');
-blink1.readNote(1, false, function (note) { Log_1.default.info('', note); });
 setInterval(() => {
     apiRequestTemperature();
 }, checkStatusInterval);
