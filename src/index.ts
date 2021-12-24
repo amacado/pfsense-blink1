@@ -99,14 +99,6 @@ blink1.version(function (version: number) {
 
 Log.info('', 'Preparing status request interval (%dms)..', checkStatusInterval)
 
-blink1.rgb(2, function (r, g, b) {
-    Log.info('', '%d %d %d', r, g, b);
-});
-
-
-blink1.writeNote(1, 'aaa');
-blink1.readNote(1, false, function (note) { Log.info('',note); });
-
 // Infinite loop to call the API and react on thresholds
 setInterval(() => {
     apiRequestTemperature();
