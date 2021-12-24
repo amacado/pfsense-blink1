@@ -8,9 +8,17 @@ nconf.defaults({
         'interval': 5000
     },
     'indicator': {
+        'temperatureThresholds': [
+            { threshold: 0, color: { red: 36, green: 189, blue: 46 } },
+            { threshold: 60, color: { red: 246, green: 225, blue: 36 } },
+            { threshold: 70, color: { red: 188, green: 19, blue: 18 } },
+        ],
         'apiRequest': {
             'ledPosition': 'Bottom'
         }
+    },
+    'log': {
+        'level': 'info'
     }
 });
 nconf.required(['api:baseUrl', 'api:client', 'api:token']);

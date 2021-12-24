@@ -100,5 +100,8 @@
   },
   "exclude":[
     "./node_modules"                                     /*  Tells Typescript not to compile specified files or folders */
-  ]
+  ],
+  "ts-node": {
+    "files": true                                        /* Make ts-node include custom d.ts files (see https://stackoverflow.com/a/68488480) */
+  }
 }

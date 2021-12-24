@@ -2,7 +2,7 @@
  * Enum for blink(1) LED positions. blink(1) mk2 and mk3
  * have support for independently addressable LED's
  */
-export enum Blink1LedPosition {
+export enum Blink1LedIndex {
     /** Address all LED's */
     All = 0,
     /** Address only the top LED */
