@@ -6,6 +6,7 @@ import Blink1 = require('node-blink1');
 import _ from 'lodash';
 import {TemperatureThreshold} from './types/TemperatureThreshold';
 import {Blink1LedIndex} from './enums/Blink1LedIndex';
+import {StatusSystem} from './types/StatusSystem';
 
 Log.verbose('', 'Import completed');
 
@@ -43,8 +44,10 @@ function apiRequestTemperature() {
 
     apiClientInstance.get('/api/v1/status/system')
         .then(function (response) {
+            let responseStatusSystem: StatusSystem = response.data.data;
+
             // handle success
-            let measuredTemperature = response.data.data.temp_c;
+            let measuredTemperature = responseStatusSystem.temp_c;
             let maximumReachedThreshold: TemperatureThreshold | undefined;
 
             temperatureThresholds.forEach((temperatureThreshold) => {
