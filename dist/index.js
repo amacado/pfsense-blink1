@@ -31,7 +31,8 @@ function apiRequestTemperature() {
     ledIndicatorApiRequest();
     ApiClient_1.default.get('/api/v1/status/system')
         .then(function (response) {
-        let measuredTemperature = response.data.data.temp_c;
+        let responseStatusSystem = response.data.data;
+        let measuredTemperature = responseStatusSystem.temp_c;
         let maximumReachedThreshold;
         temperatureThresholds.forEach((temperatureThreshold) => {
             if (measuredTemperature >= temperatureThreshold.threshold) {
