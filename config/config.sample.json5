@@ -2,7 +2,8 @@
   "blink1": {
     // optional, use specific blink(1) device identified via serial. If parameter is not set, the first blink(1) device will be used
     "serial": "string",
-    // experimental,  if enabled this setting allows hotplugging the blink(1) device. Setting this to true will not abort the script when no device is found.
+    // experimental,  if enabled this setting allows hot plugging the blink(1) device. Setting this to true will not abort the script when no device is found.
+    //                This setting allows to unplug/replug the blink(1) device while the script is running
     //                This parameter is experimental and not production ready yet.
     "hotplug": false
   },
