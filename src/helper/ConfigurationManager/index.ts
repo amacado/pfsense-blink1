@@ -7,8 +7,12 @@ nconf.file({file: 'config/config.json5', format: require('json5')}); // load con
 // default values for configuration (see config/config.sample.json5 for
 // parameter description
 nconf.defaults({
+    'blink1': {
+        'hotplug': false,
+    },
     'api': {
         'interval': 5000,
+        'timeout': 5000,
         'httpsAgent': {
             'rejectUnauthorized': true
         }

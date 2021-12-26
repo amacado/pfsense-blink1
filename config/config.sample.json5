@@ -1,7 +1,10 @@
 {
   "blink1": {
     // optional, use specific blink(1) device identified via serial. If parameter is not set, the first blink(1) device will be used
-    "serial": "string"
+    "serial": "string",
+    // experimental,  if enabled this setting allows hotplugging the blink(1) device. Setting this to true will not abort the script when no device is found.
+    //                This parameter is experimental and not production ready yet.
+    "hotplug": false
   },
   "api": {
     // required, absolute URI where your pfsense is running
@@ -12,6 +15,8 @@
     "token": "secret",
     // optional, Status check interval in milliseconds (recommended setting >1000)
     "interval": 5000,
+    // optional, timeout in milliseconds when an API request should be marked as failed
+    "timeout": 5000,
     "httpsAgent": {
       // optional, allow/disallow self signed ssl certificates (should be set to true for security reasons)
       "rejectUnauthorized": true
