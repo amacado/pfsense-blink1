@@ -4,8 +4,12 @@ nconf.env();
 nconf.argv();
 nconf.file({ file: 'config/config.json5', format: require('json5') });
 nconf.defaults({
+    'blink1': {
+        'hotplug': false,
+    },
     'api': {
         'interval': 5000,
+        'timeout': 5000,
         'httpsAgent': {
             'rejectUnauthorized': true
         }
