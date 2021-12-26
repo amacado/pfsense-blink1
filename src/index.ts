@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import ConfigurationManager from './helper/ConfigurationManager';
 import Log from './helper/Log';
 import apiClientInstance from './helper/ApiClient';

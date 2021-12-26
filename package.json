@@ -2,7 +2,7 @@
   "name": "pfsense-blink1",
   "version": "0.1.0",
   "private": false,
-  "main": "dist/index.js",
+  "bin": "dist/index.js",
   "license": "WTFPL",
   "dependencies": {
     "@types/lodash": "^4.14.178",
