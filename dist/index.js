@@ -15,53 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ConfigurationManager_1 = __importDefault(require("./helper/ConfigurationManager"));
 const Log_1 = __importDefault(require("./helper/Log"));
 const ApiClient_1 = __importDefault(require("./helper/ApiClient"));
-const Blink1 = require("node-blink1");
+const Blink1Service_1 = __importDefault(require("./services/Blink1Service"));
 const lodash_1 = __importDefault(require("lodash"));
 const Blink1LedIndex_1 = require("./enums/Blink1LedIndex");
-Log_1.default.verbose('', 'Import completed');
+Log_1.default.verbose('', 'Import of libraries, types and classes completed.');
 Log_1.default.verbose('', 'Start loading configuration and default settings..');
 const temperatureThresholds = lodash_1.default.orderBy(ConfigurationManager_1.default.get('indicator:temperatureThresholds'), ['threshold'], 'asc');
 const checkStatusInterval = Number.parseInt(ConfigurationManager_1.default.get('api:interval'));
 const blink1HotplugEnabled = Boolean(ConfigurationManager_1.default.get('blink1:hotplug'));
+const blinkSerial = ConfigurationManager_1.default.get('blink1:serial');
 let checkStatusIndicator = Blink1LedIndex_1.Blink1LedIndex[ConfigurationManager_1.default.get('indicator:apiRequest:ledPosition')];
 if (checkStatusIndicator == undefined) {
     checkStatusIndicator = Blink1LedIndex_1.Blink1LedIndex.Bottom;
     Log_1.default.warn('', 'Invalid configuration value for indicator:apiRequest:ledPosition, fallback to default value of "%s"', Blink1LedIndex_1.Blink1LedIndex[checkStatusIndicator]);
 }
 Log_1.default.verbose('', 'Loading configuration and default settings completed.');
-function getBlink1Device(fallback) {
-    return __awaiter(this, void 0, void 0, function* () {
-        Log_1.default.verbose('', 'Executing function "%s"', 'getBlink1Device');
-        try {
-            const blink1Devices = Blink1.devices();
-            Log_1.default.info('', 'Found %d blink(1) devices with serials %j ', blink1Devices.length, blink1Devices);
-            const blinkSerial = ConfigurationManager_1.default.get('blink1:serial');
-            const blink1DeviceSerial = blinkSerial !== null && blinkSerial !== void 0 ? blinkSerial : blink1Devices[0];
-            if (blink1Devices.length == 0) {
-                throw new Error('No attached blink(1) devices could be found.');
-                if (blink1HotplugEnabled == false) {
-                    process.abort();
-                }
-            }
-            if (fallback != undefined) {
-                Log_1.default.verbose('', 'Try to close existing blink(1) device connection to allow hotplug');
-                fallback.close();
-            }
-            const blink1 = new Blink1(blink1DeviceSerial);
-            Log_1.default.info('', 'Using blink(1) device with serial %s', blink1DeviceSerial);
-            blink1.version(function (version) {
-                Log_1.default.verbose('', 'Version number of blink(1) device: %d', version.toString());
-            });
-            return blink1;
-        }
-        catch (exception) {
-            if (exception instanceof Error) {
-                Log_1.default.warn('', exception.message);
-            }
-        }
-        return undefined;
-    });
-}
 function apiRequestTemperature(blink1) {
     return __awaiter(this, void 0, void 0, function* () {
         Log_1.default.verbose('', 'Executing function "%s"', 'apiRequestTemperature');
@@ -78,8 +46,8 @@ function apiRequestTemperature(blink1) {
                 }
             });
             if (maximumReachedThreshold) {
-                Log_1.default.http('', 'Fetched temperature %d°C matches threshold >= %d°C', measuredTemperature, maximumReachedThreshold.threshold);
-                Log_1.default.verbose('', 'Fade blink(1) to RGB (%d, %d, %d)', maximumReachedThreshold.color.red, maximumReachedThreshold.color.green, maximumReachedThreshold.color.blue);
+                Log_1.default.http('', 'Fetched temperature %d°C matches threshold >= %d°C.', measuredTemperature, maximumReachedThreshold.threshold);
+                Log_1.default.verbose('', 'Fade blink(1) to RGB (%d, %d, %d).', maximumReachedThreshold.color.red, maximumReachedThreshold.color.green, maximumReachedThreshold.color.blue);
                 blink1.fadeToRGB(1000, maximumReachedThreshold.color.red, maximumReachedThreshold.color.green, maximumReachedThreshold.color.blue, Blink1LedIndex_1.Blink1LedIndex.All);
             }
         }
@@ -105,17 +73,21 @@ Log_1.default.info('', 'Preparing status request interval (%dms)..', checkStatus
 function startApplication() {
     return __awaiter(this, void 0, void 0, function* () {
         Log_1.default.verbose('', 'Executing function %s', 'startApplication');
-        let blink1 = yield getBlink1Device();
+        const blink1Service = new Blink1Service_1.default(blinkSerial);
+        let blink1 = yield blink1Service.getBlink1Device();
         while (true) {
             try {
-                if (blink1HotplugEnabled) {
-                    blink1 = yield getBlink1Device(blink1);
-                }
-                if (blink1 != undefined) {
+                if (blink1HotplugEnabled)
+                    blink1 = yield blink1Service.getBlink1Device(blink1);
+                let isBlink1Available = yield blink1Service.isBlink1Available(blink1);
+                Log_1.default.verbose('', 'Result of blink(1) availability test: %j', isBlink1Available);
+                if (!isBlink1Available && !blink1HotplugEnabled)
+                    process.abort();
+                if (isBlink1Available && blink1 != undefined) {
                     yield apiRequestTemperature(blink1);
                 }
                 else {
-                    Log_1.default.verbose('', 'Skipping API request because blink(1) device is not available');
+                    Log_1.default.verbose('', 'Skipping API request because blink(1) device is not available.');
                 }
             }
             catch (exception) {
