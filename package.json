@@ -1,6 +1,6 @@
 {
   "name": "pfsense-blink1",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "bin": "dist/index.js",
   "license": "WTFPL",
