@@ -2,8 +2,8 @@
 
 <br />
 <div align="center">
-    <img src="/docs/images/blink1-logo.png" alt="blink(1)" height="60" />
-    <img src="/docs/images/pfsense-logo.png" alt="pfSense®" height="60" />
+    <img src="https://raw.githubusercontent.com/amacado/pfsense-blink1/main/docs/images/blink1-logo.png" alt="blink(1)" height="60" />
+    <img src="https://raw.githubusercontent.com/amacado/pfsense-blink1/main/docs/images/pfsense-logo.png" alt="pfSense®" height="60" />
 </div>
 
 ### Introduction
@@ -23,29 +23,46 @@ The intended deployment of this script is on another machine (or container) than
 2. Create an API Token for the REST API (see `jaredhendrickson13/pfsense-api` instructions)
 3. Install [libusb](https://libusb.info/) driver `apt-get install libusb-1.0-0` which is required to access the [blink(1)](https://blink1.thingm.com/) device using the node package [sandeepmistry/node-blink1](https://github.com/sandeepmistry/node-blink1)
 4. Install `nodejs` (see [nodejs.org](https://nodejs.org/en/))
-4. Install `yarn` package manager (see [yarnpkg.com](https://classic.yarnpkg.com/en/))
 4. Connect the [blink(1)](https://blink1.thingm.com/) via USB
-5. Clone this repository (`gh repo clone amacado/pfsense-blink`)
-7. Copy [`config/config.sample.json5`](/config/config.sample.json5), rename it to `config/config.json5` and paste API credentials and pfSense® URI (see [json5.org](https://json5.org/) for more information about the this next level json project)
-8. Adjust settings in `config/config.json5` to your needs. The default values are defined in [`ConfigurationManager`](/src/helper/ConfigurationManager/index.ts)
-9. Execute `yarn install`
-10. Run the app using `yarn run start` (or `node dist/index.js`)
 
-### Development or go build yourself
+#### Run the application
 
-- Execute `yarn install`
-- Use `yarn serve` for live development
-- Execute `yarn build` to build the project and create compiled project in [/dist/](/dist/)
-- Setup [`pre-push` hook](https://www.atlassian.com/git/tutorials/git-hooks) with following script
-  ```shell
-  #!/bin/sh
-  yarn build
-  git add dist/
-  git diff-index --quiet HEAD || git commit -m ":octocat: build sources via pre-push hook"
-  
-  exit 0
-  ```
+1. Copy [`config/config.sample.json5`](/config/config.sample.json5), rename it to `/path/to/config.json5` (default `/config/config.json5`) and paste API credentials and pfSense® URI (see [json5.org](https://json5.org/) for more information about the this next level json project)
+2. Adjust settings in `config/config.json5` to your needs. The default values are defined in [`ConfigurationManager`](/src/helper/ConfigurationManager/index.ts)
+3. Install and start`pfsense-blink1` application
+   ```bash
+   npm i pfsense-blink1 -g
+   pfsense-blink1 [--config "/path/to/config.json5"]
+   ```
 
+### Development or 'Go build yourself'
+1. Install `yarn` package manager (see [yarnpkg.com](https://classic.yarnpkg.com/en/))
+2. Clone this repository (`gh repo clone amacado/pfsense-blink1`)
+5. Execute `yarn install`
+6. Execute `yarn serve` for TypeScript watcher
+7. Execute `yarn build` to build the project and create production ready project in [/dist/](/dist/)
+8. Setup [`pre-push` hook](https://www.atlassian.com/git/tutorials/git-hooks) with following script
+   ```shell
+   #!/bin/sh
+   yarn build
+   git add dist/
+   git diff-index --quiet HEAD || git commit -m ":octocat: build sources via pre-push hook"
+   
+   exit 0
+   ```
+
+### Publishing new (npm package) version
+This project follows [Semantic Versioning 2.0.0](https://semver.org/) with the help of[`np`](https://www.npmjs.com/package/np) CLI tool
+to ensure quality.
+```bash
+yarn global add np
+npm install np -g
+```
+
+Create a new version and publish:
+```bash
+np
+```
 ### Known problems
 
 ##### Error `TypeError: cannot open device with path`
