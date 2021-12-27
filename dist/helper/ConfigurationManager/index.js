@@ -1,8 +1,10 @@
 "use strict";
+var _a;
 const nconf = require('nconf');
 nconf.env();
 nconf.argv();
-nconf.file({ file: 'config/config.json5', format: require('json5') });
+const configFile = (_a = nconf.get('config')) !== null && _a !== void 0 ? _a : 'config/config.json5';
+nconf.file({ file: configFile, format: require('json5') });
 nconf.defaults({
     'blink1': {
         'hotplug': false,
