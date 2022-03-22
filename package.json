@@ -1,6 +1,6 @@
 {
   "name": "pfsense-blink1",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "private": false,
   "homepage": "https://github.com/amacado/pfsense-blink1",
   "author": {
