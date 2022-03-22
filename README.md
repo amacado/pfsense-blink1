@@ -59,7 +59,7 @@ yarn global add np
 npm install np -g
 ```
 
-Create a new version and publish:
+Create a new version and publish (`np` is installed as dev-dependency):
 ```bash
 np
 ```
