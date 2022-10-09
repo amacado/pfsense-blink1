@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+    device:
+        image: ghcr.io/amacado/pfsense-blink1:latest
+        privileged: true
+        tty: true
+        stdin_open: true
+        volumes:
+            - config:/app/config
+        devices:
+            - '/dev:/dev'
+        restart: unless-stopped
+volumes:
+    config: {}

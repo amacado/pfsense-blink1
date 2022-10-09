@@ -7,16 +7,19 @@
 </div>
 
 ### Introduction
-
 Watch your pfSense® firewall temperature with blink(1) using Node.js® runtime
 
-### Requirements
+### Quickstart
+#### Docker (recommended: [docker-compose.yml](/docker-compose.yml))
+```
+docker pull ghcr.io/amacado/pfsense-blink1:latest
+```
 
+### Requirements
 * blink(1) `mk2` or `mk3` by [THINGM](https://blink1.thingm.com/) <br />
   <small>`mk1` does not have two LEDs on both top and bottom which are independently addressable. It might work, but not tested.</small>
 
 ### Preparations & setup
-
 The intended deployment of this script is on another machine (or container) than the pfSense®. It's recommended to keep your firewall server as "clean" as possible.
 
 1. Setup [jaredhendrickson13/pfsense-api](https://github.com/jaredhendrickson13/pfsense-api) for [pfSense®](https://www.pfsense.org/)
@@ -26,7 +29,6 @@ The intended deployment of this script is on another machine (or container) than
 4. Connect the [blink(1)](https://blink1.thingm.com/) via USB
 
 #### Run the application
-
 1. Copy [`config/config.sample.json5`](/config/config.sample.json5), rename it to `/path/to/config.json5` (default `/config/config.json5`) and paste API credentials and pfSense® URI (see [json5.org](https://json5.org/) for more information about the this next level json project)
 2. Adjust settings in `config/config.json5` to your needs. The default values are defined in [`ConfigurationManager`](/src/helper/ConfigurationManager/index.ts)
 3. Install and start`pfsense-blink1` application
@@ -94,7 +96,7 @@ or skip the check by setting configuration option `api.httpsAgent.rejectUnauthor
 
 ### Credits
 
-Special thanks to this projects:
+Special thanks to these projects:
 
 * [sandeepmistry/node-blink1](https://github.com/sandeepmistry/node-blink1)
 * [jaredhendrickson13/pfsense-api](https://github.com/jaredhendrickson13/pfsense-api)
